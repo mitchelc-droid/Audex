@@ -12,7 +12,7 @@ Designed with a focus on modern UI/UX principles, Audex features interactive aud
 
 ## Hosting
 
-> 🔗 **Live Web App:** https://[your-deployment-link-here].vercel.app
+> 🔗 **Live Web App:** [https://audex-hvlbk09d1-mitchelc-droids-projects.vercel.app](https://audex-hvlbk09d1-mitchelc-droids-projects.vercel.app)
 
 ### Core Views & Functionality
 
