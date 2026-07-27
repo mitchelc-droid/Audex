@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import { SignIn, SignUp } from "../lib/auth";
 
 const LoginView = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -33,20 +34,21 @@ const LoginView = ({ onLogin }) => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      onLogin?.();
-      navigate("/");
-    } catch (err) {
-      setError(err.message);
-    } finally {
+      await SignIn(email, password);
+      setSuccess("Login successful!");
       setLoading(false);
+      onLogin(); // Call the onLogin callback to update the parent component's state
+      navigate("/"); // Redirect to the home page after successful login
+    } catch (error) {
+      setError(error.message);
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
+
 
     if (password !== confirm) {
       setError("Passwords do not match.");
@@ -57,12 +59,17 @@ const LoginView = ({ onLogin }) => {
       return;
     }
 
-    setLoading(true);
+    try {
+      await SignUp(email, password);
+    } catch (error) {
+      setError(error.message);
+    }
+
 
     try {
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
-      setSuccess("Account created!");
+      setSuccess("Account created! Check your email for verification.");
       setEmail("");
       setPassword("");
       setConfirm("");
